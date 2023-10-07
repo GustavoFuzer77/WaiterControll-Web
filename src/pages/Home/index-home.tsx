@@ -1,7 +1,11 @@
+import { HeaderComponent } from "../../components/Header/index-header";
+import { OrderComponent } from "../../components/Order/index-order";
+
 const Home = () => {
   return (
     <>
-      <p>oi</p>
+      <HeaderComponent />
+      <OrderComponent />
     </>
   );
 };
