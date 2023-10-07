@@ -1,14 +1,15 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
-import GeneralSansRegularWoff2 from '../assets/fonts/GeneralSans-Regular.woff2';
-import GeneralSansRegularWoff from '../assets/fonts/GeneralSans-Regular.woff';
-import GeneralSansRegularTtf from '../assets/fonts/GeneralSans-Regular.ttf';
-import GeneralSansMediumWoff2 from '../assets/fonts/GeneralSans-Medium.woff2';
-import GeneralSansMediumWoff from '../assets/fonts/GeneralSans-Medium.woff';
-import GeneralSansMediumTtf from '../assets/fonts/GeneralSans-Medium.ttf';
-import GeneralSansSemiboldWoff2 from '../assets/fonts/GeneralSans-Semibold.woff2';
-import GeneralSansSemiboldWoff from '../assets/fonts/GeneralSans-Semibold.woff';
-import GeneralSansSemiboldTtf from '../assets/fonts/GeneralSans-Semibold.ttf';
+import GeneralSansRegularWoff2 from "../assets/fonts/GeneralSans-Regular.woff2";
+import GeneralSansRegularWoff from "../assets/fonts/GeneralSans-Regular.woff";
+import GeneralSansRegularTtf from "../assets/fonts/GeneralSans-Regular.ttf";
+import GeneralSansMediumWoff2 from "../assets/fonts/GeneralSans-Medium.woff2";
+import GeneralSansMediumWoff from "../assets/fonts/GeneralSans-Medium.woff";
+import GeneralSansMediumTtf from "../assets/fonts/GeneralSans-Medium.ttf";
+import GeneralSansSemiboldWoff2 from "../assets/fonts/GeneralSans-Semibold.woff2";
+import GeneralSansSemiboldWoff from "../assets/fonts/GeneralSans-Semibold.woff";
+import GeneralSansSemiboldTtf from "../assets/fonts/GeneralSans-Semibold.ttf";
+import Colors from "./Colors";
 
 export const GlobalStyles = createGlobalStyle`
 @font-face {
@@ -58,4 +59,23 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 1rem;
     color: #333;
   }
+
+  ::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: ${Colors.backgroundRedMain};
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 `;
