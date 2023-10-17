@@ -16,7 +16,7 @@ export const Board = styled.div`
   align-items: center;
   padding: 16px;
   border-radius: 16px;
-  border: 1px solid ${Colors.backgroundLightGray};
+  border: 1px solid ${Colors.backgroundLightGray600};
   flex: 1;
 
   header {
@@ -36,7 +36,7 @@ export const OrderContainer = styled.div`
 
   button {
     background-color: #fff;
-    border: 1px solid ${Colors.backgroundLightGray};
+    border: 1px solid ${Colors.backgroundLightGray600};
     height: 128px;
     border-radius: 8px;
     width: 100%;
