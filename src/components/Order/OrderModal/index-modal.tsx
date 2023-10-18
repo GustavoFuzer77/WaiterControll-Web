@@ -13,9 +13,18 @@ import { formatPrice } from "../../../utils/fn";
 interface IProdModal {
   handleClose: () => void;
   order: IOrders | null;
+  handleCancelOrder: () => void;
+  handleChangeStatus: () => void;
+  loading: boolean;
 }
 
-export const ProductModal = ({ handleClose, order }: IProdModal) => {
+export const OrderModal = ({
+  handleClose,
+  order,
+  handleCancelOrder,
+  handleChangeStatus,
+  loading,
+}: IProdModal) => {
   if (order === null) {
     return null;
   }
@@ -36,6 +45,17 @@ export const ProductModal = ({ handleClose, order }: IProdModal) => {
   const total = order.products.reduce((acc, { product, quantity }) => {
     return acc + product.price * quantity;
   }, 0);
+
+  const changeTextButtonStatus = (): string => {
+    switch (order.status) {
+      case "WAITING":
+        return "Iniciar Produção 👨‍🍳";
+      case "IN_PRODUCTION":
+        return "Concluir pedido ✔";
+      default:
+        return "";
+    }
+  };
 
   return createPortal(
     <ContainerModal>
@@ -77,13 +97,19 @@ export const ProductModal = ({ handleClose, order }: IProdModal) => {
             <span>Total</span>
             <p>R$ {formatPrice(total)}</p>
           </div>
+          {order.status !== "DONE" && (
+            <ButtonComponent
+              disabled={loading}
+              onClick={handleChangeStatus}
+              color="#fff"
+              bcColor="#666"
+              text={changeTextButtonStatus()}
+              fontWeight="600"
+            />
+          )}
           <ButtonComponent
-            color="#fff"
-            bcColor="#666"
-            text="Concluir Pedido ✔"
-            fontWeight="600"
-          />
-          <ButtonComponent
+            disabled={loading}
+            onClick={handleCancelOrder}
             color="#ff0000"
             bcColor="#ffffff"
             text="Cancelar Pedido"

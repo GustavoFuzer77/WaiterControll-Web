@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const Board = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
   align-items: center;
   padding: 16px;
@@ -92,7 +92,7 @@ export const ModalContent = styled.div`
       justify-content: space-between;
       margin-bottom: 32px;
 
-      button{
+      button {
         border: none;
         background-color: #fff;
       }
@@ -159,5 +159,10 @@ export const ModalFooter = styled.footer`
     justify-content: space-between;
     align-items: center;
     margin: 0 0 32px 0;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
 `;

@@ -1,6 +1,7 @@
+import { ButtonHTMLAttributes } from "react";
 import { Button } from "./styled";
 
-interface IButtonComponent {
+interface IButtonComponent extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   color?: string;
   fontWeight?: string;
@@ -12,9 +13,10 @@ export const ButtonComponent = ({
   color,
   fontWeight,
   bcColor,
+  ...props
 }: IButtonComponent) => {
   return (
-    <Button bgColor={bcColor} fontWeight={fontWeight} color={color}>
+    <Button {...props} bgColor={bcColor} fontWeight={fontWeight} color={color}>
       {text}
     </Button>
   );

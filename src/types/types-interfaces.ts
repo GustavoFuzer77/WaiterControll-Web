@@ -20,12 +20,7 @@ export interface IProducts {
 export interface IOrders {
   _id: string;
   table: string;
-  status: 'WAITING' | 'IN_PRODUCTION' | 'DONE';
+  status: "WAITING" | "IN_PRODUCTION" | "DONE";
   products: IProducts[];
 }
 
-export interface IOnBoard {
-  title: string;
-  icon: string;
-  orders: IOrders[];
-}
