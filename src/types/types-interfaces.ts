@@ -24,3 +24,8 @@ export interface IOrders {
   products: IProducts[];
 }
 
+export interface IIngredients {
+  _id: string;
+  name: string;
+  icon: string;
+}

@@ -37,6 +37,11 @@ export const Container = styled.div`
       background-color: black; /* Cor da borda */
     }
   }
+
+  .ingredients-div{
+    display: flex;
+
+  }
 `;
 
 export const Form = styled.form`
@@ -65,4 +70,8 @@ export const Form = styled.form`
       color: ${Colors.textGray};
     }
   }
+`;
+
+export const IngredientsSelected = styled.div`
+
 `;

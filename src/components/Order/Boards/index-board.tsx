@@ -34,7 +34,6 @@ export const OnBoard = ({
 
     const newStatus =
       selectedProd?.status === "WAITING" ? "IN_PRODUCTION" : "DONE";
-    console.log(newStatus, "newStatus");
     await api.patch(`/api/v1/orders/${selectedProd?._id}`, {
       status: newStatus,
     });

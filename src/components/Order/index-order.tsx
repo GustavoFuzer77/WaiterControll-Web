@@ -13,7 +13,6 @@ export const OrderComponent = () => {
       transports: ["websocket"],
     });
     socket.on("orders:new", (order) => {
-      console.log(order);
       setOrders((prev) => prev.concat(order));
     });
 

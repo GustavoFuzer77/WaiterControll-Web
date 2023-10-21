@@ -8,6 +8,7 @@ const Config = () => {
   useEffect(() => {
     navigator("config/produtos");
   }, []);
+
   return (
     <Container>
       <SideMenu />
