@@ -38,9 +38,8 @@ export const Container = styled.div`
     }
   }
 
-  .ingredients-div{
+  .ingredients-div {
     display: flex;
-
   }
 `;
 
@@ -73,5 +72,8 @@ export const Form = styled.form`
 `;
 
 export const IngredientsSelected = styled.div`
-
+  max-width: 100%;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 `;

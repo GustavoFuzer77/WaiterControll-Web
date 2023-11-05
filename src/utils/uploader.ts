@@ -30,7 +30,11 @@ export class FormDataSet {
     this.fileName = newName;
   }
 
-  public append(type: "image" | "string", name: string): void {
+  public append(
+    type: "image" | "string" | "custom",
+    name: string,
+    custom?: string | Blob
+  ): void {
     if (Object.keys(this.raw).length === 0) {
       throw new Error("Você deve chamar rawForm antes de chamar append.");
     }
@@ -51,6 +55,8 @@ export class FormDataSet {
       );
     } else if (type === "string") {
       this.formData.append(name, this.raw[name]);
+    } else if (type === "custom") {
+      this.formData.append(name, custom!);
     }
   }
 

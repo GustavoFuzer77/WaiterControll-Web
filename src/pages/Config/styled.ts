@@ -55,3 +55,10 @@ export const Container = styled.div`
     }
   }
 `;
+
+export const RightBar = styled.div`
+  width: 132px;
+  border: 1px solid ${Colors.backgroundLightGray600};
+  background: ${Colors.backgroundRedMain};
+  display: flex;
+`;

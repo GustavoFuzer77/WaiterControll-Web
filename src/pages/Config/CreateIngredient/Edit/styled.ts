@@ -16,6 +16,42 @@ export const Body = styled.div`
   border-radius: 12px;
   padding: 32px;
 
+  .arrow-image {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    .arrow{
+
+    }
+  }
+
+  .imagem-preview-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    .arrow-image-changer {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background-color: #f0f0f0;
+    }
+
+    .arrow-image-changer::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -20px; /* ajuste conforme necessário para a posição da seta */
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent; /* tamanho da seta */
+      border-bottom: 10px solid transparent; /* tamanho da seta */
+      border-left: 10px solid #f0f0f0;
+    }
+  }
+
   header {
     display: flex;
     justify-content: space-between;

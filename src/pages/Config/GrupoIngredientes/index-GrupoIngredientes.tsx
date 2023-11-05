@@ -1,22 +1,35 @@
 // import SideMenu from "../../components/SideMenu/index-sideMenu";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   Checkbox,
   Chip,
-  FormControlLabel,
-  FormGroup,
   TextField,
 } from "@mui/material";
+import { toast } from "react-toastify";
+
 import { Container, Form, IngredientsSelected } from "./styled";
 import { ModalComponent } from "../../../components/Modal/index-ModalComponent";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { api } from "../../../utils/api";
-import { IIngredients } from "../../../types/types-interfaces";
+import {
+  IIngredients,
+  IIngredientsGroups,
+} from "../../../types/types-interfaces";
 import { FieldValues, useController, useForm } from "react-hook-form";
+import { TrashIcon } from "../../../components/Icons/TrashIcon/index-trash";
+import { SemiArrow } from "../../../components/Icons/SemiArrow/index-semiArrow";
 
 const GrupoIngredientes = () => {
   const [openModalViewAllIngredients, setOpenModalViewAllIngredients] =
     useState(false);
+
+  const [
+    openModalViewAllGroupsIngredients,
+    setOpenModalViewAllGroupsIngredients,
+  ] = useState(false);
 
   const { register, handleSubmit, control } = useForm();
 
@@ -24,29 +37,46 @@ const GrupoIngredientes = () => {
     control,
     name: "createIngredient",
   });
-  const [value, setValue] = useState(field.value || []);
+  const [value, setValue] = useState<string[]>(field.value || []);
 
   const [getDataIngredients, setDataIngredients] = useState<IIngredients[]>([]);
+  const [getDataIngredientsGroup, setDataIngredientsGroup] = useState<
+    IIngredientsGroups[]
+  >([]);
 
   const openModalAllIngredients = async () => {
     await api.get("/api/v1/ingredients").then(({ data }) => {
-      console.log(data);
       setDataIngredients(data);
     });
     setOpenModalViewAllIngredients(true);
   };
 
+  const openModalAllGroups = async () => {
+    await api.get("/api/v1/ingredientsGroup").then(({ data }) => {
+      setDataIngredientsGroup(data);
+    });
+    setOpenModalViewAllGroupsIngredients(true);
+  };
+
   const modObj: { ingredient: string }[] = value
-    .filter((elx: string[]) => elx)
-    .map((ely: string[]) => {
+    .filter((elx) => elx)
+    .map((ely) => {
       return { ingredient: ely };
     });
 
   const sendDataObjToCreateGroup = async (data: FieldValues) => {
-    await api.post(`/api/v1/ingredientsGroup`, {
-      name: data.name,
-      ingredients: modObj,
-    });
+    try {
+      await api.post(`/api/v1/ingredientsGroup`, {
+        name: data.name,
+        ingredients: modObj,
+      });
+
+      toast.success("Grupo cadastrado com sucesso!");
+    } catch (err) {
+      toast.error(
+        "Ocorreu um erro ao tentar cadastrar um grupo de ingredientes"
+      );
+    }
   };
 
   const onSubmit = (data: FieldValues) => {
@@ -56,12 +86,12 @@ const GrupoIngredientes = () => {
   const handleDelete = (id: string) => {
     const index = value.indexOf(id);
     if (index > -1) {
-      const updatedValue = [...value]; // Cópia do array
+      const updatedValue = [...value];
       updatedValue.splice(index, 1);
       setValue(updatedValue);
     }
   };
-  console.log(value);
+
   const getSelectedIngredient = getDataIngredients.filter((item) => {
     return modObj.some((modItem) => modItem.ingredient === item._id);
   });
@@ -97,24 +127,29 @@ const GrupoIngredientes = () => {
         </Form>
         {getSelectedIngredient.length >= 1 && (
           <div className="title-area">
-            <h1>ingredientes selecionados:</h1>
+            <h1>Ingredientes selecionados:</h1>
           </div>
         )}
-        {getSelectedIngredient.map((selected) => (
-          <IngredientsSelected>
-            <div className="container-ingredient">
+        <IngredientsSelected>
+          {getSelectedIngredient.map((selected) => (
+            <div key={selected._id} className="container-ingredient">
               <Chip
-                label={`${selected.name} - ${selected._id}`}
+                label={`${selected.name}`}
                 variant="outlined"
                 onDelete={() => handleDelete(selected._id)}
               />
             </div>
-          </IngredientsSelected>
-        ))}
+          ))}
+        </IngredientsSelected>
       </body>
       <footer>
         <div>
-          <Button className="listGroup" component="label" variant="contained">
+          <Button
+            onClick={openModalAllGroups}
+            className="listGroup"
+            component="label"
+            variant="contained"
+          >
             Ver todos os grupos salvos
           </Button>
         </div>
@@ -134,8 +169,9 @@ const GrupoIngredientes = () => {
                 padding: "12px",
               }}
             >
-              {getDataIngredients.map((ingredients, index) => (
+              {getDataIngredients.map((ingredients) => (
                 <div
+                  key={ingredients._id}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -150,43 +186,126 @@ const GrupoIngredientes = () => {
                     checked={value.includes(ingredients._id)}
                     value={ingredients._id}
                     onChange={(e) => {
-                      setValue((prev: string[]) => {
+                      setValue((prev) => {
                         const itemIndex = prev.findIndex(
-                          (item) => item === ingredients._id
+                          (prev) => prev === ingredients._id
                         ); // 1 true -1 false
                         if (itemIndex < 0) {
                           return prev.concat(ingredients._id);
+                        } else {
+                          return prev.filter((_, index) => index !== itemIndex); // Remove o item do array
                         }
-
-                        const newItem = [...prev];
-
-                        const restItem = newItem[itemIndex];
-                        console.log(restItem, "restItem");
-                        // newItem[itemIndex] = {
-                        //   quantity: newItem[itemIndex].quantity + 1,
-                        // };
                       });
-                      // const valueCopy = [...value];
-                      // console.log(valueCopy, "a");
-                      // valueCopy.push(e.target.checked ? e.target.value : null);
-
-                      // const findIdx = valueCopy.findIndex(
-                      //   (elx) => elx === ingredients._id
-                      // );
-                      // if (findIdx < 0) {
-                      //   return valueCopy.push(
-                      //     e.target.checked ? e.target.value : null
-                      //   );
-                      // }
-
-                      // field.onChange(valueCopy);
-
-                      // setValue(valueCopy);
                     }}
                   />
                   <p>{ingredients.name}</p>
                 </div>
               ))}
+            </div>
+          }
+        />
+      )}
+      {openModalViewAllGroupsIngredients && (
+        <ModalComponent
+          title="Todos os Grupos de ingredientes"
+          onClose={() => setOpenModalViewAllGroupsIngredients(false)}
+          onChildrenBody={
+            <div
+              style={{
+                width: "100%",
+                marginTop: "16px",
+                overflowY: "auto",
+                minHeight: "400px",
+                maxHeight: "400px",
+                padding: "12px",
+              }}
+            >
+              {getDataIngredientsGroup.flatMap((groups, i) => {
+                return (
+                  <Accordion key={i}>
+                    <AccordionSummary
+                      expandIcon={<SemiArrow width="40px" heigth="40px" />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <button
+                        style={{
+                          marginRight: "12px",
+                          display: "flex",
+                          alignItems: "center",
+                          border: "#fd4659 1px solid",
+                          borderRadius: "30%",
+                          background: "rgba(254, 144, 155, 0.5)",
+                        }}
+                      >
+                        <TrashIcon heigth="25px" width="25px" />
+                      </button>
+                      <p>{groups?.name}</p>
+                    </AccordionSummary>
+                    {groups.ingredients.map(
+                      (elx: { ingredient: IIngredients }, i: number) => {
+                        return (
+                          <AccordionDetails key={i}>
+                            <div
+                              style={{
+                                marginLeft: "32px",
+                                fontSize: "13px",
+                              }}
+                            >
+                              <div style={{ marginBottom: "16px" }}></div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  width: "100%",
+                                }}
+                                key={elx.ingredient._id}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    width: "100%",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <span
+                                    style={{
+                                      width: "200px",
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    {elx.ingredient?.name}
+                                  </span>
+                                </div>
+                                <div
+                                  style={{
+                                    width: "100px",
+                                    height: "60px",
+                                    borderRadius: "12px",
+                                    overflow: "hidden",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
+                                    src={`http://localhost:3001/uploads/${elx.ingredient?.icon}`}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </AccordionDetails>
+                        );
+                      }
+                    )}
+                  </Accordion>
+                );
+              })}
             </div>
           }
         />

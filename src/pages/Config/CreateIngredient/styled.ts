@@ -15,6 +15,7 @@ export const Container = styled.div`
     flex-direction: column;
     flex: 1;
     padding: 32px;
+
   }
 
   footer {
@@ -46,6 +47,17 @@ export const Container = styled.div`
     position: absolute;
     inset: 0;
   }
+
+
+  .image-previews {
+      margin-top: 32px;
+
+      img {
+        width: 360px;
+        height: 300px;
+        object-fit: contain;
+      }
+    }
 `;
 
 export const Form = styled.form`

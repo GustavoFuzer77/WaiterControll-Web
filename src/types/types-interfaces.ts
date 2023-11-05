@@ -29,3 +29,22 @@ export interface IIngredients {
   name: string;
   icon: string;
 }
+
+export interface IIngredientsGroups {
+  _id: string;
+  name: string;
+  ingredients: {ingredient: IIngredients}[];
+}
+
+export interface ICategory {
+  _id: string;
+  name: string;
+  icon: string;
+}
+
+export type TIcons = {
+  width?: string;
+  heigth?: string;
+  fill?: string;
+  background?: string;
+};
