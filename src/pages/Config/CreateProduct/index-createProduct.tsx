@@ -1,7 +1,7 @@
 // import SideMenu from "../../components/SideMenu/index-sideMenu";
 import { Button, Checkbox, TextField } from "@mui/material";
-import { Container, Form } from "./styled";
-import { useCallback, useEffect, useState } from "react";
+import { Container, Form, Footer } from "./styled";
+import { useCallback, useState } from "react";
 import { FieldValues, useController, useForm } from "react-hook-form";
 import { ICategory, IIngredientsGroups } from "../../../types/types-interfaces";
 import { api } from "../../../utils/api";
@@ -18,7 +18,7 @@ const CreateProduct = () => {
   const [openModalViewAllCategories, setOpenModalViewAllCategories] =
     useState(false);
 
-  const [openModalCategory, setOpenModalCategory] = useState(false);
+  // const [openModalCategory, setOpenModalCategory] = useState(false);
 
   const { register, handleSubmit, control } = useForm();
 
@@ -72,7 +72,7 @@ const CreateProduct = () => {
           });
         });
       });
-    return JSON.stringify(obj);
+    return obj;
     // return obj;
   }, [groupsState]);
 
@@ -80,12 +80,42 @@ const CreateProduct = () => {
     const sender = new FormDataSet();
     sender.rawForm(data);
     sender.setNameFile("product");
+
+    if (data.name === "") {
+      toast.error("Nome não pode ser vazio.");
+      return;
+    }
+    if (data.description === "") {
+      toast.error("descrição não pode ser vazio.");
+      return;
+    }
+    if (data.price === "") {
+      toast.error("Preço não pode ser vazio.");
+      return;
+    }
+    if (data.image.length === 0) {
+      toast.error("Imagem não pode ser vazio.");
+      return;
+    }
+    if (data.categoryId === "") {
+      toast.error("Categoria não pode ser vazio.");
+      return;
+    }
+    if (selectAndMountObjGroupIngredients().length === 0) {
+      toast.error("Selecione pelo menos 1 grupo de ingrediente.");
+      return;
+    }
+
     sender.append("image", "image");
     sender.append("string", "name");
     sender.append("string", "description");
     sender.append("string", "price");
     sender.append("custom", "categoryId", categoryState[0]);
-    sender.append("custom", "ingredients", selectAndMountObjGroupIngredients());
+    sender.append(
+      "custom",
+      "ingredients",
+      JSON.stringify(selectAndMountObjGroupIngredients())
+    );
 
     const formData = sender.getFormData();
     try {
@@ -274,6 +304,19 @@ const CreateProduct = () => {
           }
         />
       )}
+      <Footer>
+        <div className="body-footer">
+          <h3>Resumo do produto:</h3>
+          <div>
+            <p>Ingredientes:</p>
+            <ul>
+              {selectAndMountObjGroupIngredients().map((group) => {
+                return <li>{group.name}</li>;
+              })}
+            </ul>
+          </div>
+        </div>
+      </Footer>
     </Container>
   );
 };

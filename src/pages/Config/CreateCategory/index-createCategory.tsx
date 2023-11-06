@@ -46,6 +46,16 @@ const CreateCategory = () => {
     const sender = new FormDataSet();
     sender.rawForm(data);
     sender.setNameFile("categories");
+
+    if (data.name === "") {
+      toast.error("Nome não pode ser vazio.");
+      return;
+    }
+    if(data.icon.length === 0){
+      toast.error("Imagem não pode ser vazio.");
+      return;
+    }
+
     sender.append("image", "icon");
     sender.append("string", "name");
     const formData = sender.getFormData();

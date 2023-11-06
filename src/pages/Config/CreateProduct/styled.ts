@@ -70,3 +70,29 @@ export const Form = styled.form`
     grid-area: price;
   }
 `;
+
+export const Footer = styled.footer`
+  margin-top: 32px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .body-footer {
+    padding: 32px;
+    background-color: beige;
+    height: 100%;
+
+    div {
+      padding: 16px;
+
+      ul {
+        padding: 6px;
+
+        li {
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+`;

@@ -15,33 +15,17 @@ const CreateIngredient = () => {
   const [openModalViewAllIngredients, setOpenModalViewAllIngredients] =
     useState(false);
 
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const [getDataIngredients, setDataIngredients] = useState<IIngredients[]>([]);
-  const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const getData = useCallback(async () => {
     await api.get("/api/v1/ingredients").then(({ data }) => {
       setDataIngredients(data);
     });
   }, [openModalViewAllIngredients]);
-
-  const onSubmit = async (data: FieldValues) => {
-    const sender = new FormDataSet();
-    sender.rawForm(data);
-    sender.setNameFile("ingredients");
-    sender.append("image", "icon");
-    sender.append("string", "name");
-
-    const formData = sender.getFormData();
-    try {
-      await api.post("/api/v1/ingredients", formData);
-      toast.success("Ingrediente cadastrado com sucesso!");
-    } catch (err) {
-      toast.error("Ocorreu um erro ao tentar cadastar um ingrediente.");
-    }
-  };
 
   const handleOpenAllIngredientsModal = () => {
     getData();
@@ -58,36 +42,47 @@ const CreateIngredient = () => {
     getData();
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setSelectedFile(file);
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      console.log(data);
+      if (data.name === "") {
+        toast.error("Nome não pode ser vazio.");
+        return;
+      }
+      if(data.icon.length === 0){
+        toast.error("Imagem não pode ser vazio.");
+        return;
+      }
+      const sender = new FormDataSet();
+      sender.rawForm(data);
+      sender.setNameFile("ingredients");
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreview(null);
-      setSelectedFile(null);
+      sender.append("image", "icon");
+      sender.append("string", "name");
+      const formData = sender.getFormData();
+
+      await api.post("/api/v1/ingredients", formData);
+      toast.success("Ingrediente cadastrado com sucesso!");
+    } catch (err: any) {
+      const errorData = err.response.data;
+      toast.error(errorData.message);
     }
   };
+  // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files.length > 0) {
+  //     const file = event.target.files[0];
+  //     setSelectedFile(file);
 
-  const validateInputField = () => {
-    const nameInput = watch("name");
-    if (nameInput === undefined) {
-      console.log('1')
-      return true
-    }
-    else if (typeof nameInput === 'string' && nameInput.length <= 0) {
-      console.log('2')
-      return true
-    };
-    console.log('3')
-    return false;
-  };
-
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreview(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     setPreview(null);
+  //     setSelectedFile(null);
+  //   }
+  // };
 
 
   return (
@@ -111,27 +106,15 @@ const CreateIngredient = () => {
               Selecione uma imagem para o Ingrediente
               <input
                 {...register("icon")}
-                onChange={(e) => handleFileChange(e)}
                 style={{ display: "none" }}
                 type="file"
               />
             </Button>
-            <button
-              style={{
-                background: `${
-                  selectedFile
-                    ? Colors.backgroundGreen400
-                    : Colors.backgroundLightGray500
-                }`,
-              }}
-              type="submit"
-              className="save"
-              disabled={!selectedFile && validateInputField()}
-            >
+            <button type="submit" className="save">
               Salvar
             </button>
           </Form>
-          {preview && (
+          {/* {preview && (
             <div className="image-previews">
               <p>Prévia da imagem selecionada: </p>
               <div>
@@ -142,7 +125,7 @@ const CreateIngredient = () => {
                 />
               </div>
             </div>
-          )}
+          )} */}
         </body>
 
         <footer>

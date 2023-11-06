@@ -56,6 +56,12 @@ export const EditIngredient = ({
       if (selectedFile) {
         sender.append("image", "icon");
       }
+
+      if (fields.name === "") {
+        toast.error("Nome não pode ser vazio.");
+        return;
+      }
+
       sender.append("string", "name");
 
       const formData = sender.getFormData();

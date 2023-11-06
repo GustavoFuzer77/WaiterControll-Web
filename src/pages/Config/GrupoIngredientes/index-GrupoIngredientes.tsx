@@ -66,6 +66,16 @@ const GrupoIngredientes = () => {
 
   const sendDataObjToCreateGroup = async (data: FieldValues) => {
     try {
+
+      if (data.name === "") {
+        toast.error("Nome não pode ser vazio.");
+        return;
+      }
+      if(modObj.length === 0){
+        toast.error("É necessario selecionar pelo menos 1 ingrediente.");
+        return;
+      }
+
       await api.post(`/api/v1/ingredientsGroup`, {
         name: data.name,
         ingredients: modObj,

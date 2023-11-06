@@ -1,7 +1,3 @@
-// type Ttoast = {
-//   success: (message: string) => unknown;
-//   error: (message: string) => unknown;
-// };
 import { FieldValues } from "react-hook-form";
 
 export class FormDataSet {
