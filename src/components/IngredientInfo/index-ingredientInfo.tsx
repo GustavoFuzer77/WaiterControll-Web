@@ -31,7 +31,6 @@ export const IngredientInfo = ({
       onDelete(ingredient._id);
     } catch (err: any) {
       const errorData = err.response.data;
-      console.log(errorData);
       toast.error(errorData.message);
     }
   };

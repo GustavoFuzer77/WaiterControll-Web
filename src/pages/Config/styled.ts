@@ -61,4 +61,24 @@ export const RightBar = styled.div`
   border: 1px solid ${Colors.backgroundLightGray600};
   background: ${Colors.backgroundRedMain};
   display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  div {
+    margin-top: 32px;
+
+    button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 8px;
+
+      &:hover{
+        opacity: 0.7;
+      }
+    }
+  }
 `;

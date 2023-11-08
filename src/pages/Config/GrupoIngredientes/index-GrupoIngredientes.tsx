@@ -66,12 +66,11 @@ const GrupoIngredientes = () => {
 
   const sendDataObjToCreateGroup = async (data: FieldValues) => {
     try {
-
       if (data.name === "") {
         toast.error("Nome não pode ser vazio.");
         return;
       }
-      if(modObj.length === 0){
+      if (modObj.length === 0) {
         toast.error("É necessario selecionar pelo menos 1 ingrediente.");
         return;
       }
@@ -99,6 +98,20 @@ const GrupoIngredientes = () => {
       const updatedValue = [...value];
       updatedValue.splice(index, 1);
       setValue(updatedValue);
+    }
+  };
+
+  const handleDeleteGroup = async (idGroup: string) => {
+    try {
+      await api.delete(`/api/v1/ingredientsGroup/${idGroup}`);
+
+      setDataIngredientsGroup((prev) => {
+        return prev.filter((groups) => groups._id !== idGroup);
+      });
+      toast.success("Deletado com sucesso");
+    } catch (err: any) {
+      const errorData = err.response.data;
+      toast.error(errorData.message);
     }
   };
 
@@ -238,18 +251,6 @@ const GrupoIngredientes = () => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <button
-                        style={{
-                          marginRight: "12px",
-                          display: "flex",
-                          alignItems: "center",
-                          border: "#fd4659 1px solid",
-                          borderRadius: "30%",
-                          background: "rgba(254, 144, 155, 0.5)",
-                        }}
-                      >
-                        <TrashIcon heigth="25px" width="25px" />
-                      </button>
                       <p>{groups?.name}</p>
                     </AccordionSummary>
                     {groups.ingredients.map(
@@ -313,6 +314,19 @@ const GrupoIngredientes = () => {
                         );
                       }
                     )}
+                    <button
+                      style={{
+                        marginRight: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        border: "#fd4659 1px solid",
+                        borderRadius: "30%",
+                        background: "rgba(254, 144, 155, 0.5)",
+                      }}
+                      onClick={() => handleDeleteGroup(groups._id)}
+                    >
+                      <TrashIcon heigth="25px" width="25px" />
+                    </button>
                   </Accordion>
                 );
               })}

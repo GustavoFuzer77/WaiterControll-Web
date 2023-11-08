@@ -35,9 +35,9 @@ const CreateCategory = () => {
     try {
       // setDataCategory((prev) => prev.filter((category) => category._id !== id));
       await api.delete(`/api/v1/categories/${id}`);
+      toast.success('Deletado com sucesso');
     } catch (err: any) {
       const errorData = err.response.data;
-      console.log(errorData);
       toast.error(errorData.message);
     }
   };

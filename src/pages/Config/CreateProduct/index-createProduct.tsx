@@ -305,17 +305,9 @@ const CreateProduct = () => {
         />
       )}
       <Footer>
-        <div className="body-footer">
-          <h3>Resumo do produto:</h3>
-          <div>
-            <p>Ingredientes:</p>
-            <ul>
-              {selectAndMountObjGroupIngredients().map((group) => {
-                return <li>{group.name}</li>;
-              })}
-            </ul>
-          </div>
-        </div>
+        <Button component="label" variant="contained">
+
+        </Button>
       </Footer>
     </Container>
   );
