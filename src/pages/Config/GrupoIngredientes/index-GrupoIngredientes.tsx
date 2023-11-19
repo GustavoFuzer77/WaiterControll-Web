@@ -101,6 +101,20 @@ const GrupoIngredientes = () => {
     }
   };
 
+  // const handleDeleteGroup = async (idGroup: string) => {
+  //   try {
+  //     await api.delete(`/api/v1/ingredientsGroup/${idGroup}`);
+
+  //     setDataIngredientsGroup((prev) => {
+  //       return prev.filter((groups) => groups._id !== idGroup);
+  //     });
+  //     toast.success("Deletado com sucesso");
+  //   } catch (err: any) {
+  //     const errorData = err.response.data;
+  //     toast.error(errorData.message);
+  //   }
+  // };
+
   const getSelectedIngredient = getDataIngredients.filter((item) => {
     return modObj.some((modItem) => modItem.ingredient === item._id);
   });
