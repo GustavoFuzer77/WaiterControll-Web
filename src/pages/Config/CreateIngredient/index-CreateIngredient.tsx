@@ -1,7 +1,7 @@
 // import SideMenu from "../../components/SideMenu/index-sideMenu";
 import { TextField, Button } from "@mui/material";
 import { Container, Form } from "./styled";
-import { useCallback, useState, ChangeEvent } from "react";
+import { useCallback, useState } from "react";
 import { ModalComponent } from "../../../components/Modal/index-ModalComponent";
 import { FieldValues, useForm } from "react-hook-form";
 import { api } from "../../../utils/api";
@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { IIngredients } from "../../../types/types-interfaces";
 import { IngredientInfo } from "../../../components/IngredientInfo/index-ingredientInfo";
 import { FormDataSet } from "../../../utils/uploader";
-import Colors from "../../../styles/Colors";
 
 const CreateIngredient = () => {
   const [openModalViewAllIngredients, setOpenModalViewAllIngredients] =
@@ -44,12 +43,11 @@ const CreateIngredient = () => {
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      console.log(data);
       if (data.name === "") {
         toast.error("Nome não pode ser vazio.");
         return;
       }
-      if(data.icon.length === 0){
+      if (data.icon.length === 0) {
         toast.error("Imagem não pode ser vazio.");
         return;
       }
@@ -84,7 +82,6 @@ const CreateIngredient = () => {
   //   }
   // };
 
-
   return (
     <>
       <Container>
@@ -110,7 +107,7 @@ const CreateIngredient = () => {
                 type="file"
               />
             </Button>
-            <button type="submit" className="save">
+            <button type="submit">
               Salvar
             </button>
           </Form>
@@ -135,7 +132,7 @@ const CreateIngredient = () => {
             variant="contained"
             onClick={() => handleOpenAllIngredientsModal()}
           >
-            Ver todas os Ingredientes salvos
+            Ver todos os Ingredientes salvos
           </Button>
         </footer>
       </Container>

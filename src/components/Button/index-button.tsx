@@ -5,18 +5,18 @@ interface IButtonComponent extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   color?: string;
   fontWeight?: string;
-  bcColor?: string;
+  bgcolor?: string;
 }
 
 export const ButtonComponent = ({
   text,
   color,
   fontWeight,
-  bcColor,
+  bgcolor,
   ...props
 }: IButtonComponent) => {
   return (
-    <Button {...props} bgColor={bcColor} fontWeight={fontWeight} color={color}>
+    <Button {...props} bgcolor={bgcolor} fontWeight={fontWeight} color={color}>
       {text}
     </Button>
   );

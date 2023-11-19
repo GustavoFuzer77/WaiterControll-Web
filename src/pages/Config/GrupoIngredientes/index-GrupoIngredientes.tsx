@@ -66,12 +66,11 @@ const GrupoIngredientes = () => {
 
   const sendDataObjToCreateGroup = async (data: FieldValues) => {
     try {
-
       if (data.name === "") {
         toast.error("Nome não pode ser vazio.");
         return;
       }
-      if(modObj.length === 0){
+      if (modObj.length === 0) {
         toast.error("É necessario selecionar pelo menos 1 ingrediente.");
         return;
       }
@@ -106,6 +105,19 @@ const GrupoIngredientes = () => {
     return modObj.some((modItem) => modItem.ingredient === item._id);
   });
 
+  const handleDeleteGroup = async (id: string) => {
+    try {
+      await api.delete(`/api/v1/ingredientsGroup/${id}`);
+      setDataIngredientsGroup((prev) =>
+        prev.filter((groups) => groups._id !== id)
+      );
+      toast.success("Produto deletado com sucesso");
+    } catch (err: any) {
+      const errorData = err.response.data;
+      toast.error(errorData.message);
+    }
+  };
+
   return (
     <Container>
       <header>
@@ -131,9 +143,7 @@ const GrupoIngredientes = () => {
             Selecione os Ingredientes
           </Button>
 
-          <button type="submit" className="save">
-            Salvar
-          </button>
+          <button type="submit">Salvar</button>
         </Form>
         {getSelectedIngredient.length >= 1 && (
           <div className="title-area">
@@ -195,7 +205,7 @@ const GrupoIngredientes = () => {
                     key={ingredients._id}
                     checked={value.includes(ingredients._id)}
                     value={ingredients._id}
-                    onChange={(e) => {
+                    onChange={() => {
                       setValue((prev) => {
                         const itemIndex = prev.findIndex(
                           (prev) => prev === ingredients._id
@@ -238,18 +248,6 @@ const GrupoIngredientes = () => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <button
-                        style={{
-                          marginRight: "12px",
-                          display: "flex",
-                          alignItems: "center",
-                          border: "#fd4659 1px solid",
-                          borderRadius: "30%",
-                          background: "rgba(254, 144, 155, 0.5)",
-                        }}
-                      >
-                        <TrashIcon heigth="25px" width="25px" />
-                      </button>
                       <p>{groups?.name}</p>
                     </AccordionSummary>
                     {groups.ingredients.map(
@@ -313,6 +311,21 @@ const GrupoIngredientes = () => {
                         );
                       }
                     )}
+                    <div
+                      style={{
+                        padding: "12px",
+                        display: "flex",
+                        justifyContent: "end",
+                      }}
+                    >
+                      <Button
+                        onClick={() => handleDeleteGroup(groups._id)}
+                        component="label"
+                        variant="contained"
+                      >
+                        Deletar
+                      </Button>
+                    </div>
                   </Accordion>
                 );
               })}

@@ -48,7 +48,6 @@ export const EditIngredient = ({
   };
 
   const onSubmit = async (fields: FieldValues) => {
-    console.log(fields);
     try {
       const sender = new FormDataSet();
       sender.rawForm(fields);
@@ -70,7 +69,6 @@ export const EditIngredient = ({
       onUpdate(initialState._id);
       toast.success("Ingrediente editado com sucesso!");
     } catch (err) {
-      console.log(err);
       toast.error("Ocorreu um erro ao editar o ingrediente.");
     }
   };
@@ -138,7 +136,7 @@ export const EditIngredient = ({
                 )}
               </div>
             </div>
-            <button type="submit">Salvar</button>
+            <button style={{padding: '6px 8px 6px 8px'}} type="submit">Salvar</button>
           </form>
         </body>
       </Body>

@@ -7,6 +7,7 @@ import { IIngredients } from "../../types/types-interfaces";
 import { api } from "../../utils/api";
 import React from "react";
 import { toast } from "react-toastify";
+import { Button } from "@mui/material";
 
 interface IIngredientsInfo {
   ingredient: IIngredients;
@@ -31,7 +32,6 @@ export const IngredientInfo = ({
       onDelete(ingredient._id);
     } catch (err: any) {
       const errorData = err.response.data;
-      console.log(errorData);
       toast.error(errorData.message);
     }
   };
@@ -43,8 +43,8 @@ export const IngredientInfo = ({
           <h1>{ingredient.name}</h1>
         </div>
         <div className="icons-methods">
-          <button onClick={() => handleEditIngredients()}>Editar</button>
-          <button onClick={handleDeleteIngredient}>Deletar</button>
+          <Button onClick={() => handleEditIngredients()}>Editar</Button>
+          <Button onClick={handleDeleteIngredient}>Deletar</Button>
         </div>
       </Container>
       {openEdit && (

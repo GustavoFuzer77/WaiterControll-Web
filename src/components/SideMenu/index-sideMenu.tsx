@@ -43,7 +43,7 @@ const SideMenu = () => {
         ))}
       </body>
       <footer>
-        {/* <Button bgColor={Colors.backgroundLightGray200}> */}
+        {/* <Button bgcolor={Colors.backgroundLightGray200}> */}
         <Link className="go-back" to={"/"}>
           Voltar
         </Link>

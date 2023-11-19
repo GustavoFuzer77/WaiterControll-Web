@@ -60,6 +60,10 @@ export const GlobalStyles = createGlobalStyle`
     color: #333;
   }
 
+  #root{
+    height: 100vh;
+  }
+
   ::-webkit-scrollbar {
   width: 3px;
 }

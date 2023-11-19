@@ -17,6 +17,21 @@ export interface IProducts {
   _id: string;
 }
 
+export interface IProductEndpoint {
+	_id: string;
+	name: string;
+	description: string;
+	imagePath: string;
+	price: number;
+	ingredients: {
+		name: string;
+		icon: string;
+		_id: string;
+	}[];
+	categoryId: string;
+	__v: number;
+}
+
 export interface IOrders {
   _id: string;
   table: string;

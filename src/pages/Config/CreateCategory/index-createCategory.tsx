@@ -37,7 +37,6 @@ const CreateCategory = () => {
       await api.delete(`/api/v1/categories/${id}`);
     } catch (err: any) {
       const errorData = err.response.data;
-      console.log(errorData);
       toast.error(errorData.message);
     }
   };
@@ -51,7 +50,7 @@ const CreateCategory = () => {
       toast.error("Nome não pode ser vazio.");
       return;
     }
-    if(data.icon.length === 0){
+    if (data.icon.length === 0) {
       toast.error("Imagem não pode ser vazio.");
       return;
     }
@@ -64,7 +63,8 @@ const CreateCategory = () => {
       await api.post(`/api/v1/categories`, formData);
       toast.success("Categoria cadastrado com sucesso!");
     } catch (err: any) {
-      toast.error(err);
+      const errorData = err.response.data;
+      toast.error(errorData.message);
     }
   };
 
@@ -92,7 +92,7 @@ const CreateCategory = () => {
               type="file"
             />
           </Button>
-          <button className="save" type="submit">
+          <button  type="submit">
             Salvar
           </button>
         </Form>
@@ -179,9 +179,13 @@ const CreateCategory = () => {
                           justifyContent: "flex-end",
                         }}
                       >
-                        <button onClick={() => handleDelete(category._id)}>
+                        <Button
+                          component="label"
+                          variant="contained"
+                          onClick={() => handleDelete(category._id)}
+                        >
                           <p>Deletar</p>
-                        </button>
+                        </Button>
                       </div>
                     </AccordionDetails>
                   </Accordion>

@@ -117,7 +117,7 @@ export const ModalContent = styled.div`
   }
 `;
 
-export const ModalBodyItems = styled.body`
+export const ModalBodyItems = styled.div`
   margin: 0 0 16px 0;
 
   .item-container {
@@ -153,7 +153,7 @@ export const ModalBodyItems = styled.body`
   }
 `;
 
-export const ModalFooter = styled.footer`
+export const ModalFooter = styled.div`
   .total-value {
     display: flex;
     justify-content: space-between;

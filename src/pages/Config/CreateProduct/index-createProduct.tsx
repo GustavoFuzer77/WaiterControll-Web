@@ -3,7 +3,12 @@ import { Button, Checkbox, TextField } from "@mui/material";
 import { Container, Form, Footer } from "./styled";
 import { useCallback, useState } from "react";
 import { FieldValues, useController, useForm } from "react-hook-form";
-import { ICategory, IIngredientsGroups } from "../../../types/types-interfaces";
+import {
+  ICategory,
+  IIngredientsGroups,
+  IProductEndpoint,
+  IProducts,
+} from "../../../types/types-interfaces";
 import { api } from "../../../utils/api";
 import { toast } from "react-toastify";
 import { ModalComponent } from "../../../components/Modal/index-ModalComponent";
@@ -46,11 +51,23 @@ const CreateProduct = () => {
 
   const [getDataCategory, setDataCategory] = useState<ICategory[]>([]);
 
+  const [getProducts, setProducts] = useState<IProductEndpoint[]>([]);
+
+  const [openModalViewAllProducts, setOpenModalViewAllProducts] =
+    useState(false);
+
   const openModalAllGroups = async () => {
     await api.get("/api/v1/ingredientsGroup").then(({ data }) => {
       setDataIngredientsGroup(data);
     });
     setOpenModalViewAllGroupsIngredients(true);
+  };
+
+  const openModalAllProduct = async () => {
+    await api.get("/api/v1/products").then(({ data }) => {
+      setProducts(data);
+    });
+    setOpenModalViewAllProducts(true);
   };
 
   const openModalAllCategory = async () => {
@@ -123,6 +140,17 @@ const CreateProduct = () => {
       toast.success("Produto cadastrado com sucesso!");
     } catch (err) {
       toast.error("Ocorreu um erro ao tentar cadastrar um produto");
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      await api.delete(`/api/v1/products/${id}`);
+      setProducts((prev) => prev.filter((product) => product._id !== id));
+      toast.success("Produto deletado com sucesso");
+    } catch (err: any) {
+      const errorData = err.response.data;
+      toast.error(errorData.message);
     }
   };
 
@@ -304,18 +332,67 @@ const CreateProduct = () => {
           }
         />
       )}
-      <Footer>
-        <div className="body-footer">
-          <h3>Resumo do produto:</h3>
-          <div>
-            <p>Ingredientes:</p>
-            <ul>
-              {selectAndMountObjGroupIngredients().map((group) => {
-                return <li>{group.name}</li>;
+      {openModalViewAllProducts && (
+        <ModalComponent
+          title="Todos os Produtos"
+          onClose={() => setOpenModalViewAllProducts(false)}
+          onChildrenBody={
+            <div
+              style={{
+                width: "100%",
+                marginTop: "16px",
+                overflowY: "auto",
+                minHeight: "400px",
+                maxHeight: "400px",
+                padding: "12px",
+              }}
+            >
+              {getProducts.map((products) => {
+                return (
+                  <div
+                    key={products._id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "12px",
+                      border: "1px solid #2c2c2c",
+                      borderRadius: "6px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p>{products.name}</p>
+                      <Button
+                        component="label"
+                        variant="contained"
+                        onClick={() => handleDeleteProduct(products._id)}
+                      >
+                        Deletar
+                      </Button>
+                    </div>
+                  </div>
+                );
               })}
-            </ul>
-          </div>
-        </div>
+            </div>
+          }
+        />
+      )}
+      <Footer>
+        <Button
+          onClick={openModalAllProduct}
+          component="label"
+          variant="contained"
+        >
+          Ver todos os produtos salvos
+        </Button>
       </Footer>
     </Container>
   );

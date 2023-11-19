@@ -49,7 +49,11 @@ export const OnBoard = ({
     setLoading(true);
     await api.delete(`/api/v1/orders/${selectedProd?._id}`);
     onCancelOrder(selectedProd!._id);
-    toast.success(`O pedido da mesa ${selectedProd?.table} foi cancelado!`);
+    toast.success(
+      `O pedido da mesa ${selectedProd?.table} foi ${
+        selectedProd?.status !== "DONE" ? "cancelado" : "finalizado"
+      }!`
+    );
     setLoading(false);
     setOpenModal(false);
   };

@@ -25,6 +25,7 @@ export const OrderModal = ({
   handleChangeStatus,
   loading,
 }: IProdModal) => {
+
   if (order === null) {
     return null;
   }
@@ -78,7 +79,7 @@ export const OrderModal = ({
           <span>Itens:</span>
           <div className="item-container">
             {order.products.map((prod: IProducts) => (
-              <div className="item">
+              <div className="item" key={prod._id}>
                 <img
                   src={`http://localhost:3001/uploads/${prod.product.imagePath}`}
                   alt=""
@@ -102,7 +103,7 @@ export const OrderModal = ({
               disabled={loading}
               onClick={handleChangeStatus}
               color="#fff"
-              bcColor="#666"
+              bgcolor="#666"
               text={changeTextButtonStatus()}
               fontWeight="600"
             />
@@ -111,8 +112,8 @@ export const OrderModal = ({
             disabled={loading}
             onClick={handleCancelOrder}
             color="#ff0000"
-            bcColor="#ffffff"
-            text="Cancelar Pedido"
+            bgcolor="#ffffff"
+            text={order.status !== "DONE" ? "Cancelar Pedido" : "Finalizar pedido"}
             fontWeight="400"
           />
         </ModalFooter>
