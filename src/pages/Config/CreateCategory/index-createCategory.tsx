@@ -33,8 +33,8 @@ const CreateCategory = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      // setDataCategory((prev) => prev.filter((category) => category._id !== id));
       await api.delete(`/api/v1/categories/${id}`);
+      setDataCategory((prev) => prev.filter((category) => category._id !== id));
       toast.success('Deletado com sucesso');
     } catch (err: any) {
       const errorData = err.response.data;
